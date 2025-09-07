@@ -1,35 +1,47 @@
-Hệ thống chatbot hỗ trợ:
+# VexereDemo Chatbot
 
-FAQ (tra cứu câu hỏi thường gặp từ CSV).
+Hệ thống chatbot hỗ trợ các chức năng:
 
-Booking (xem vé, đổi vé, đặt vé theo từng bước).
+* **FAQ**: Tra cứu câu hỏi thường gặp từ CSV.
+* **Booking**: Xem vé, đổi vé, đặt vé theo từng bước.
+* **OCR**: Ảnh vé → mã vé.
+* **Voice**: Âm thanh → text → intent.
 
-OCR (ảnh vé → mã vé).
+---
 
-Voice (âm thanh → text → intent).
+## 1. Yêu cầu môi trường
 
-2. Yêu cầu môi trường
+* Python 3.10+ (đã test với Python 3.12.10)
 
-Python 3.10+ (đã test với Python 3.12.10).
+### Tạo virtual environment
 
-Tạo virtual env:
-
+```bash
 python -m venv vexeredemo
-source vexeredemo/bin/activate   # Linux/Mac
-vexeredemo\Scripts\activate      # Windows
 
-Hoặc sử dụng môi trường đã tạo sẵn : 
-.\Scripts\activate #Windows
+# Linux / Mac
+source vexeredemo/bin/activate
 
-Cài dependencies:
+# Windows
+vexeredemo\Scripts\activate
+```
 
+### Cài dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-3. Chuẩn bị dữ liệu
+---
 
-FAQ CSV: data/faq_data.csv
+## 2. Chuẩn bị dữ liệu
 
-4. Cấu trúc thư mục
+* FAQ CSV: `data/faq_data.csv`
+
+---
+
+## 3. Cấu trúc thư mục
+
+```
 vexeredemo/
 │── orchestrator/
 │   └── app.py             # Orchestrator CLI
@@ -39,31 +51,44 @@ vexeredemo/
 │   ├── ocr_server.py      # OCR stub
 │   └── speech_server.py   # Voice stub
 │── tests/
-│   └── test_orchestrator.py       # Unit & flow tests
+│   └── test_orchestrator.py  # Unit & flow tests
 │── data/
 │   └── faq_data.csv       # FAQ sample data
 │── README.md
 │── requirements.txt
+```
 
-5. Cấu hình OpenAI API
+---
+
+## 4. Cấu hình OpenAI API
 
 Chatbot cần LLM để phân loại intent.
+Cấu hình API key trong `app.py`:
 
-Cấu hình API key trong file app.py:
-openai.api_key ="sk-xxxxx"
+```python
+openai.api_key = "sk-xxxxx"
+```
 
-6. Chạy demo CLI
+---
 
-Khởi động MCP server:
+## 5. Chạy demo CLI
 
+### Khởi động MCP server:
+
+```bash
 python ../tools/rag_server.py
 python ../tools/booking_server.py
+```
 
-Khởi động chatbot:
+### Khởi động chatbot:
 
+```bash
 python ../orchestrator/app.py
+```
 
-Ví dụ
+### Ví dụ tương tác
+
+```
 User: Hành lý bao nhiêu ký?
 Bot: Quý khách có thể mang theo ... (từ: Hành lý xách tay bao nhiêu kg?)
 
@@ -85,17 +110,22 @@ Bot: Bạn muốn thanh toán bằng cách nào? (momo, visa, tiền mặt)
 User: momo
 Bot: ✅ Vé đã được đặt thành công!
 Chi tiết: {'date': '2025-09-15', 'route': 'SG-HN', 'seat': 'A12', 'payment': 'momo'}
+```
 
-7. Chạy test
+---
+
+## 6. Chạy test
 
 Chạy toàn bộ test với pytest:
 
+```bash
 pytest -v ../tests/test_orchestrator.py
+```
 
-8. Mở rộng
+---
 
-Có thể thay stub OCR/Voice bằng dịch vụ thực tế (Tesseract OCR, Google Speech).
+## 7. Mở rộng
 
-Triển khai Flask/FastAPI để expose REST API thay cho CLI.
-
-Thay FAISS bằng ElasticSearch khi dữ liệu lớn.
+* Thay stub OCR/Voice bằng dịch vụ thực tế (Tesseract OCR, Google Speech).
+* Triển khai Flask/FastAPI để expose REST API thay cho CLI.
+* Thay FAISS bằng ElasticSearch khi dữ liệu lớn.

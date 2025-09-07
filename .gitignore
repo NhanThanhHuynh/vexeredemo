@@ -1,0 +1,7 @@
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+.pytest_cache/
+__pycache__/
+*.mp4
